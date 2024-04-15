@@ -13,8 +13,8 @@ import sys
 import os
 import Player_Control
 
-#SOURCE = 'webcam'    #
-SOURCE = 'fake cam'
+SOURCE = 'webcam'    #
+#SOURCE = 'fake cam'
 def play(webcam_stream, background,Mario):
     #Get_player_height
     height_accepted = 0
@@ -66,8 +66,6 @@ def play(webcam_stream, background,Mario):
         elif key & 0xFF == ord('e'):
             # Assuming get_EXPOSURE is a method of webcam_stream that either prints or sets the exposure
             webcam_stream.get_EXPOSURE()
-        elif cv2.waitKey(1) & 0xFF == ord('p') and SOURCE != 'webcam':
-            webcam_stream.pause()
 
 
 # initializing and starting multi - thread webcam input stream
@@ -81,7 +79,9 @@ else:
 
     webcam_stream = WebcamStream(stream_id=0)  # 0 id for main camera
     print("Using webcam")
-    webcam_stream()
+    webcam_stream.start()
+    # Start recording
+    webcam_stream.start_recording(output_file='output.avi')
 keyboard = KeyboardInterface()
 Mario = Player()
 background = Frames_Process.scan_background(webcam_stream)
@@ -90,6 +90,8 @@ play(webcam_stream, background, Mario)
 if SOURCE != 'webcam':
     webcam_stream.vcap.release()
 else :
+    webcam_stream.stop_recording()
+    webcam_stream.stop()
     webcam_stream.vcap.release()
 # Destroy all the windows
 cv2.destroyAllWindows()
