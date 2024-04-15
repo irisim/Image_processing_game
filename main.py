@@ -66,6 +66,8 @@ def play(webcam_stream, background,Mario):
         elif key & 0xFF == ord('e'):
             # Assuming get_EXPOSURE is a method of webcam_stream that either prints or sets the exposure
             webcam_stream.get_EXPOSURE()
+        elif cv2.waitKey(1) & 0xFF == ord('p') and SOURCE != 'webcam':
+            webcam_stream.pause()
 
 
 # initializing and starting multi - thread webcam input stream
@@ -79,7 +81,7 @@ else:
 
     webcam_stream = WebcamStream(stream_id=0)  # 0 id for main camera
     print("Using webcam")
-    webcam_stream.start()
+    webcam_stream()
 keyboard = KeyboardInterface()
 Mario = Player()
 background = Frames_Process.scan_background(webcam_stream)

@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 # from PIL import Image
 # from pygame.locals import *
-from threading import Thread
+from threading import Thread,Event
 
 """______________________________________________________________________________
     *                                                                           *
@@ -38,8 +38,10 @@ class FakeCamStream:
         if self.grabbed is False:
             print('[Exiting] No more frames to read')
             exit(0)
-        # self.stopped is initialized to False
+        # self.paused is initialized to False
         self.stopped = True
+        self.paused = False
+
         # thread instantiation
         self.t = Thread(target=self.update, args=())
 
@@ -51,13 +53,17 @@ class FakeCamStream:
         self.stopped = False
         self.t.start()
 
+    def stop(self):
+        self.t.join()
+
     # method passed to thread to read next available frame
     def update(self):
         while True:
-            if self.stopped is True:
+            if self.stopped:
                 break
 
-            self.grabbed, self.frame = self.vcap.read()
+            if not self.paused:
+                self.grabbed, self.frame = self.vcap.read()
             self.frame_ready = True
 
             if self.grabbed is False:
@@ -74,8 +80,10 @@ class FakeCamStream:
         return cv2.flip(self.frame, 1)
 
     # method to stop reading frames
-    def stop(self):
-        self.stopped = True
+    def pause(self):
+        self.paused = not self.paused
+        print(f'paused set to {self.paused}⏸')
+
     def quit(self):
         self.stopped = True
         self.t.join()
