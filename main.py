@@ -13,7 +13,7 @@ import sys
 import os
 import Player_Control
 
-SOURCE = 'webcam'    #
+SOURCE = 'input.avi'    #
 #SOURCE = 'fake cam'
 def play(webcam_stream, background,Mario):
     #Get_player_height
@@ -66,6 +66,10 @@ def play(webcam_stream, background,Mario):
         elif key & 0xFF == ord('e'):
             # Assuming get_EXPOSURE is a method of webcam_stream that either prints or sets the exposure
             webcam_stream.get_EXPOSURE()
+
+        elif cv2.waitKey(1) & 0xFF == ord('p'):
+            webcam_stream.pause()
+
 
 
 # initializing and starting multi - thread webcam input stream

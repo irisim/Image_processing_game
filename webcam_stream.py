@@ -14,6 +14,7 @@ class WebcamStream:
         self.grabbed, self.frame = self.vcap.read()
         self.frame_ready = False
         self.stopped = True
+        self.paused = False
         self.recording = False
         self.out = None
         self.t = Thread(target=self.update, args=())
@@ -42,6 +43,10 @@ class WebcamStream:
 
     def read(self):
         return cv2.flip(self.frame, 1)
+
+    def pause(self):
+        self.paused = not self.paused
+        print('paused⏸'*self.paused + f'resumed⏯'*(not self.paused))
 
     def stop(self):
         self.stopped = True
