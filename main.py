@@ -34,26 +34,36 @@ def play(webcam_stream, background,Mario):
             break
 
         if key & 0xFF == ord('3'):
-            Mario.height_of_person = 380
+            Mario.height_of_person = 380 #iris = 380
             print("Mario.height_of_person = ", Mario.height_of_person,"Mario.center_of_center = ", Mario.center_of_center)
             height_accepted = 1
             break
     print("Press 'b' to edit thresholds\n")
     print("Press 'c' to edit colors\n")
     while True:
-        # Capture the video frame
-        frame = webcam_stream.read()
-        Mario.frame = frame
-        Mario.frame_with_red_green = frame.copy()
-        # Process the frame
-        Mario.mask, Mario.mask_4color = Frames_Process.filter_player(Mario.frame, background)
+        # Capture the video framea
+        while Mario.pause == False :
+            frame = webcam_stream.read()
+            Mario.frame = frame
+            Mario.frame_with_red_green = frame.copy()
+            # Process the frame
+            Mario.mask, Mario.mask_4color = Frames_Process.filter_player(Mario.frame, background)
 
-        Player_Control.player_control(Mario.mask,keyboard,Mario)
-        #mask = filter_player(frame, backg1round)
-        grid = Frames_Process.grid_output(frame, background,Mario)
+            Player_Control.player_control(Mario.mask,keyboard,Mario)
+            #mask = filter_player(frame, backg1round)
+            grid = Frames_Process.grid_output(frame, background,Mario)
+            cv2.imshow('output', grid)
+            if cv2.waitKey(1) & 0xFF == ord('p'):
+                # keyboard.block_program_presses()
+                Mario.pause = True
+                print("Press 'b' to edit thresholds\n")
+                print("Press 'c' to edit colors\n")
+                webcam_stream.pause()
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
         # Display the output
-        cv2.imshow('output', grid)
+        cv2.imshow('output', frame)
 
         # Handle user input
         #key = cv2.waitKey(1)
@@ -61,15 +71,17 @@ def play(webcam_stream, background,Mario):
             break
         elif cv2.waitKey(1) & 0xFF == ord('b'):
             Mario.Trashi.alter_threshold()
+            webcam_stream.pause()
+            Mario.pause = False
         elif cv2.waitKey(1) & 0xFF == ord('c'):
             Mario.Colori.frame = Mario.frame
             Mario.Colori.change_color()
+            webcam_stream.pause()
+            Mario.pause = False
         elif key & 0xFF == ord('e'):
             # Assuming get_EXPOSURE is a method of webcam_stream that either prints or sets the exposure
             webcam_stream.get_EXPOSURE()
 
-        elif cv2.waitKey(1) & 0xFF == ord('p'):
-            webcam_stream.pause()
 
 
 
