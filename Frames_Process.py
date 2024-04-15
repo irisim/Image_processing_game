@@ -148,12 +148,13 @@ def grid_output(frame, background, Mario):
         lean, center_of_upper_mass = Mario.lean, Mario.center_of_upper_mass
         if lean == 'left':
             # paint binary image2 white pixels green
-            binary_image2[mask == 255] = [0, 255, 0]
+            binary_image2[mask == 255] = [0, 0, 255]
         if lean == 'right':
             # paint binary image2 white pixels red
-            binary_image2[mask == 255] = [0,0,255]
+            binary_image2[mask == 255] = [0,255,0]
         # edges = cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)
         if not np.isnan(center_of_upper_mass[0]) and not np.isnan(center_of_upper_mass[1]):
+            center_of_upper_mass = (round(center_of_upper_mass[0]), round(center_of_upper_mass[1]))
             if Mario.squat == 'down':
                 # draw arrow down
                 binary_image2 = cv2.arrowedLine(binary_image2, center_of_upper_mass, center_of_mass, (0, 0, 255), 10,tipLength =0.5)
@@ -162,7 +163,7 @@ def grid_output(frame, background, Mario):
                 binary_image2 = cv2.arrowedLine(binary_image2, center_of_mass, center_of_upper_mass, (0, 255, 0), 10,
                                                 tipLength=0.5)
             draw_spot_info(Mario.frame_with_red_green, center_of_upper_mass, "upper")
-        frame_with_rectangles = draw_rectangle(frame, mask,center_of_mass,center_of_upper_mass, width, height)
+            frame_with_rectangles = draw_rectangle(frame, mask,center_of_mass,center_of_upper_mass, width, height)
         if Mario.right_grab == True:
             write_text(binary_image2, "Green Right Grab", color=(0, 255, 0), font_scale=1)
             binary_image2 = cv2.arrowedLine(binary_image2, (400, 100), (600, 100), (0, 255, 0), 15,

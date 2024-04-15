@@ -19,7 +19,7 @@ def player_control(mask,keyboard, Mario):
     #########
     if not np.isnan(center_of_mass[0]) and not np.isnan(center_of_mass[1]):
         center_of_mass = (round(center_of_mass[0]), round(center_of_mass[1]))
-        Mario.center_of_mass = center_of_mass
+        #Mario.center_of_mass = center_of_mass
         lean, center_of_upper_mass = Player_Position.player_lean(center_of_mass,width, height,w=Mario.width,th = Mario.Trashi.leani, mask=mask)
         Mario.lean = lean
         Mario.center_of_upper_mass = center_of_upper_mass
@@ -31,8 +31,8 @@ def player_control(mask,keyboard, Mario):
             squat = Player_Position.player_squat(center_of_mass,center_of_upper_mass,th=Mario.Trashi.squati,Height =Mario.height_of_person)
             Mario.squat = squat
             #### Is it neccessary here ? yes
-            center_of_upper_mass = (round(center_of_upper_mass[0]), round(center_of_upper_mass[1]))
-            Mario.center_of_upper_mass = center_of_upper_mass
+            #center_of_upper_mass = (round(center_of_upper_mass[0]), round(center_of_upper_mass[1]))
+            #Mario.center_of_upper_mass = center_of_upper_mass
 
     #print(lean)
     if Mario.jump == 'up':

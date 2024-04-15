@@ -49,12 +49,18 @@ def get_player_position(mask,outlier_std_threshold=5):
     width = np.max(main_mass_w) - np.min(main_mass_w)
     height = np.max(main_mass_h) - np.min(main_mass_h)
 
-    if not np.isnan(center_of_mass[0]) and not np.isnan(center_of_mass[1]):
-        center_of_mass = (round(center_of_mass[0]), round(center_of_mass[1])) ## cancel if you want the accuracy
     return center_of_mass, width, height, percentage
 
-def player_squat(center_of_mass,center_of_upper_mass,th=1,Height = 300):
-    delta = Height// th
+def jumping(Mario, th = 4):
+    if (time.time() - Mario.time_down > 2 and time.time() - Mario.time_up > 0.5) :
+        if ( Mario.last_center[1] - Mario.center_of_mass[1] > (Mario.Trashi.jumpi/100) ):
+            Mario.time_up = time.time()
+            return 'up'
+    else:
+        return 'center'
+
+def player_squat(center_of_mass,center_of_upper_mass,th=100,Height = 300):
+    delta = Height*100/ th
     y = center_of_mass[1]
 
     if center_of_upper_mass[1] > y - delta:
@@ -65,7 +71,7 @@ def player_squat(center_of_mass,center_of_upper_mass,th=1,Height = 300):
 def player_lean(center_of_mass,width, height, w = 640 , th = 4,mask = None):
     # calculate the threshold precentage
     #print("W=",w)
-    th = w*th//100
+    th = w*th//10000
     # width
     x = center_of_mass[0]
 
@@ -88,13 +94,6 @@ def player_lean(center_of_mass,width, height, w = 640 , th = 4,mask = None):
         return 'left',center_of_upper_mass
     return 'center', center_of_upper_mass
 
-def jumping(Mario, th = 4):
-    if (time.time() - Mario.time_down > 2 and time.time() - Mario.time_up > 0.5) :
-        if ( Mario.last_center[1] - Mario.center_of_mass[1] > Mario.Trashi.jumpi ):
-            Mario.time_up = time.time()
-            return 'up'
-    else:
-        return 'center'
 
 def grabing(Mario):
     Time = time.time()
@@ -105,7 +104,7 @@ def grabing(Mario):
     Frames_Process.draw_spot_info(Mario.frame_with_red_green, green_location, "green")
     Frames_Process.draw_spot_info(Mario.frame_with_red_green, red_location, "red")
     bottom_height = Mario.center_of_mass[1] + Mario.height//2
-    limit_bottom_height = Mario.center_of_mass[1] + Mario.height_of_person//(2*Mario.Trashi.grabi)
+    limit_bottom_height = Mario.center_of_mass[1] + Mario.height_of_person//(2*Mario.Trashi.grabi/100)
     if green_location != None :
         if limit_bottom_height < green_location[1]: # or limit_bottom_height < red_location[1] :
             print("Green grab, green_location =",green_location )
