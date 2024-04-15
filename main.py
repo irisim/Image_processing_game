@@ -11,9 +11,10 @@ import Frames_Process
 from Player import Player
 import sys
 import os
+import Player_Control
 
-SOURCE = 'webcam'    #
-#SOURCE = 'fake cam'
+#SOURCE = 'webcam'    #
+SOURCE = 'fake cam'
 def play(webcam_stream, background,Mario):
     #Get_player_height
     height_accepted = 0
@@ -44,7 +45,7 @@ def play(webcam_stream, background,Mario):
         # Process the frame
         Mario.mask, Mario.mask_4color = Frames_Process.filter_player(Mario.frame, background)
 
-        Player_Position.player_control(Mario.mask,keyboard,Mario)
+        Player_Control.player_control(Mario.mask,keyboard,Mario)
         #mask = filter_player(frame, backg1round)
         grid = Frames_Process.grid_output(frame, background,Mario)
 
