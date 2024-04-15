@@ -37,6 +37,8 @@ def play(webcam_stream, background,Mario):
             print("Mario.height_of_person = ", Mario.height_of_person,"Mario.center_of_center = ", Mario.center_of_center)
             height_accepted = 1
             break
+    print("Press 'b' to edit thresholds\n")
+    print("Press 'c' to edit colors\n")
     while True:
         # Capture the video frame
         frame = webcam_stream.read()
@@ -57,18 +59,10 @@ def play(webcam_stream, background,Mario):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         elif cv2.waitKey(1) & 0xFF == ord('b'):
-            print("Current squat threshold = ", Mario.squat_th, "\n")
-            accept_th = 0
-            while accept_th != 1:
-                sys.stdin = os.fdopen(0)
-                squat_th = input("Enter new squat threshold = ")
-                if squat_th.isdigit():
-                    int_value = int(squat_th)
-                    print("Input is an integer.")
-                    accept_th = 1
-                else:
-                    print("Input is not an integer.")
-            Mario.squat_th = int_value
+            Mario.Trashi.alter_threshold()
+        elif cv2.waitKey(1) & 0xFF == ord('c'):
+            Mario.Colori.frame = Mario.frame
+            Mario.Colori.change_color()
         elif key & 0xFF == ord('e'):
             # Assuming get_EXPOSURE is a method of webcam_stream that either prints or sets the exposure
             webcam_stream.get_EXPOSURE()

@@ -88,9 +88,9 @@ def player_lean(center_of_mass,width, height, w = 640 , th = 4,mask = None):
         return 'left',center_of_upper_mass
     return 'center', center_of_upper_mass
 
-def jumping(Mario):
+def jumping(Mario, th = 4):
     if (time.time() - Mario.time_down > 2 and time.time() - Mario.time_up > 0.5) :
-        if ( Mario.last_center[1] - Mario.center_of_mass[1] > 4 ):
+        if ( Mario.last_center[1] - Mario.center_of_mass[1] > Mario.Trashi.jumpi ):
             Mario.time_up = time.time()
             return 'up'
     else:
@@ -105,7 +105,7 @@ def grabing(Mario):
     Frames_Process.draw_spot_info(Mario.frame_with_red_green, green_location, "green")
     Frames_Process.draw_spot_info(Mario.frame_with_red_green, red_location, "red")
     bottom_height = Mario.center_of_mass[1] + Mario.height//2
-    limit_bottom_height = Mario.center_of_mass[1] + Mario.height_of_person//(2*5)
+    limit_bottom_height = Mario.center_of_mass[1] + Mario.height_of_person//(2*Mario.Trashi.grabi)
     if green_location != None :
         if limit_bottom_height < green_location[1]: # or limit_bottom_height < red_location[1] :
             print("Green grab, green_location =",green_location )
