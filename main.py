@@ -1,11 +1,11 @@
 
 from keyboard_interface import KeyboardInterface
-from recorder import fake_cam
+from recorder import fake_cam, FakeCamStream
 from webcam_stream import WebcamStream
 import cv2
 import numpy as np
 import time
-import trash_functions
+#import trash_functions
 import Player_Position
 import Frames_Process
 from Player import Player
@@ -76,8 +76,9 @@ def play(webcam_stream, background,Mario):
 
 # initializing and starting multi - thread webcam input stream
 if SOURCE != 'webcam':
-    webcam_stream = fake_cam('./input.avi')
+    webcam_stream = FakeCamStream('./input.avi')
     print("Using fake cam")
+    webcam_stream.start()
 
 else:
     # initializing and starting multi - thread webcam input stream
@@ -88,10 +89,10 @@ else:
 keyboard = KeyboardInterface()
 Mario = Player()
 background = Frames_Process.scan_background(webcam_stream)
-play(webcam_stream, background,Mario)
+play(webcam_stream, background, Mario)
 # After the loop release the cap object
 if SOURCE != 'webcam':
-    webcam_stream.cap.release()
+    webcam_stream.vcap.release()
 else :
     webcam_stream.vcap.release()
 # Destroy all the windows
