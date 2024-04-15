@@ -46,7 +46,7 @@ class FakeCamStream:
         self.t.daemon = True  # daemon threads run in background
 
 
-    # method to start thread
+    ## method to start thread
     def start(self):
         self.stopped = False
         self.t.start()
