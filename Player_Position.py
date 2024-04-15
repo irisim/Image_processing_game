@@ -110,6 +110,7 @@ def grabing(Mario):
             print("Green grab, green_location =",green_location )
             print("bottom_height =",bottom_height ,"limit_bottom_height =",limit_bottom_height )
             Mario.right_grab = True
+            Mario.time_right_grab = time.time()
         else :
             Mario.right_grab = False
 
@@ -119,6 +120,7 @@ def grabing(Mario):
             print("Red Grab, red_location =",red_location )
             print("bottom_height =",bottom_height ,"limit_bottom_height =",limit_bottom_height )
             Mario.left_grab = True
+            Mario.time_left_grab = time.time()
         else :
             Mario.left_grab = False
 

@@ -40,7 +40,7 @@ def player_control(mask,keyboard, Mario):
         keyboard.stop_long_press(Key.down)
         keyboard.start_long_press(Key.up)
 
-    if Mario.time_right_grab < 2:
+    if Mario.time_right_grab < 1:
         keyboard.start_long_press(Key.right)
     if Mario.right_grab == True:
         print("right grab")
@@ -48,7 +48,7 @@ def player_control(mask,keyboard, Mario):
         Mario.time_right_grab = time.time()
         keyboard.start_long_press(Key.right)
 
-    if Mario.time_left_grab < 2:
+    if Mario.time_left_grab < 1:
         keyboard.start_long_press(Key.left)
     if Mario.left_grab == True:
         print("left grab")
