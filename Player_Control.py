@@ -10,7 +10,7 @@ def player_control(mask,keyboard, Mario):
     lean = 'center'
     squat = 0
     ########dad
-    center_of_mass, width, height, percentage = Player_Position.get_player_position(mask)
+    center_of_mass, width, height, percentage = Player_Position.get_player_position(mask, Mario.Trashi.outlier_std_threshold)
     mask = Player_Position.Region_mask(mask, center_of_mass, height, width)
     Mario.mask = mask
     Mario.center_of_mass = center_of_mass
@@ -20,7 +20,7 @@ def player_control(mask,keyboard, Mario):
     if not np.isnan(center_of_mass[0]) and not np.isnan(center_of_mass[1]):
         center_of_mass = (round(center_of_mass[0]), round(center_of_mass[1]))
         Mario.center_of_mass = center_of_mass
-        lean, center_of_upper_mass = Player_Position.player_lean(center_of_mass,width, height,w=Mario.width, mask=mask)
+        lean, center_of_upper_mass = Player_Position.player_lean(center_of_mass,width, height,w=Mario.width,th = Mario.Trashi.leani, mask=mask)
         Mario.lean = lean
         Mario.center_of_upper_mass = center_of_upper_mass
         jumps = Player_Position.jumping(Mario)
@@ -28,7 +28,7 @@ def player_control(mask,keyboard, Mario):
         Player_Position.grabing(Mario)
         if not np.isnan(center_of_upper_mass[0]) and not np.isnan(center_of_upper_mass[1]):
             #squat = player_squat(center_of_mass,center_of_upper_mass,th=1,H=Mario.H)
-            squat = Player_Position.player_squat(center_of_mass,center_of_upper_mass,th=Mario.squat_th,Height =Mario.height_of_person)
+            squat = Player_Position.player_squat(center_of_mass,center_of_upper_mass,th=Mario.Trashi.squati,Height =Mario.height_of_person)
             Mario.squat = squat
             #### Is it neccessary here ? yes
             center_of_upper_mass = (round(center_of_upper_mass[0]), round(center_of_upper_mass[1]))

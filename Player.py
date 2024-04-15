@@ -6,6 +6,8 @@ from scipy import ndimage
 from pynput.keyboard import Key, Controller, Listener
 import Frames_Process
 import Player_Position
+import Get_color
+import Thresholds
 
 class Player:
     def __init__(self):
@@ -37,6 +39,8 @@ class Player:
         self.left_grab = None
         self.time_right_grab = time.time()
         self.time_left_grab = time.time()
+        self.Trashi = Thresholds.Trashi()
+        self.Colori = Get_color.Colori()
 
     def set_down(self):
         self.time_down = time.time()
@@ -49,4 +53,8 @@ class Player:
         else:
             print("Times = ", Times)
             self.jump = None'''
+
+
+
+
 

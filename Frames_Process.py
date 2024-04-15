@@ -173,7 +173,7 @@ def grid_output(frame, background, Mario):
                                             tipLength=0.5)
     # Prepare frames for display
     frames = [background, Mario.frame_with_red_green, frame_with_rectangles, binary_image2]
-    resized_frames = frames #[cv2.resize(frame, (320, 240)) for frame in frames]
+    resized_frames = [cv2.resize(frame, (480, 360)) for frame in frames] # frames #
 
     # Combine frames into a grid
     top_row = np.hstack(resized_frames[:2])
