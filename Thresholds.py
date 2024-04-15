@@ -3,7 +3,7 @@ import sys
 class Trashi:
     def __init__(self):
         self.squati = 650  # Smaller -> more squats easy, larger -> less squats, range [600,700]
-        self.leani = 850   # Smaller -> more action easily, larger -> less actions
+        self.leani = 500   # Smaller -> more action easily, larger -> less actions
         self.grabi = 500   # Smaller -> LESS action easily, larger -> MORE actions
         self.jumpi = 400   # Smaller -> more action easily, larger -> less actions
         self.outlier_std_threshold = 5
