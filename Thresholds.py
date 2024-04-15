@@ -2,7 +2,7 @@ import sys
 
 class Trashi:
     def __init__(self):
-        self.squati = 650  # Smaller -> more squats easy, larger -> less squats, range [600,700]
+        self.squati = 600  # Smaller -> more squats easy, larger -> less squats, range [600,700] 650
         self.leani = 500   # Smaller -> more action easily, larger -> less actions
         self.grabi = 500   # Smaller -> LESS action easily, larger -> MORE actions
         self.jumpi = 400   # Smaller -> more action easily, larger -> less actions
@@ -23,7 +23,7 @@ class Trashi:
         print("2 - Lean Threshold")
         print("3 - Grab Threshold")
         print("4 - Jump Threshold")
-        print("5 - Outlier Standard Deviation Threshold")
+        print("5 - Outlier Standadrd Deviation Threshold")
         print("6 - Exit")
 
     def alter_threshold(self):

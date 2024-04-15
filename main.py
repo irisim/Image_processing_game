@@ -14,6 +14,7 @@ import os
 import Player_Control
 
 SOURCE = 'input.avi'    #
+SOURCE = 'webcam'
 #SOURCE = 'fake cam'
 def play(webcam_stream, background,Mario):
     #Get_player_height
