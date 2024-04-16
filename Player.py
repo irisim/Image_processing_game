@@ -42,6 +42,7 @@ class Player:
         self.Trashi = Thresholds.Trashi()
         self.Colori = Get_color.Colori()
         self.pause = False
+        self.faster = False
 
     def set_down(self):
         self.time_down = time.time()

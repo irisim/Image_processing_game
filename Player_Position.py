@@ -52,7 +52,7 @@ def get_player_position(mask,outlier_std_threshold=5):
     return center_of_mass, width, height, percentage
 
 def jumping(Mario, th = 4):
-    if (time.time() - Mario.time_down > 2 and time.time() - Mario.time_up > 0.5) :
+    if (time.time() - Mario.time_down > 0.5 and time.time() - Mario.time_up > 0.3) :
         if ( Mario.last_center[1] - Mario.center_of_mass[1] > (Mario.Trashi.jumpi/100) ):
             Mario.time_up = time.time()
             return 'up'
@@ -68,10 +68,10 @@ def player_squat(center_of_mass,center_of_upper_mass,th=100,Height = 300):
         #print("center_of_upper_mass[0]=", center_of_upper_mass[0], "y=", y, "y-th=", y - th, "th=", th)
         return 'down'
     return 0
-def player_lean(center_of_mass,width, height, w = 640 , th = 4,mask = None):
+def player_lean(center_of_mass,width, height, w = 300 , th = 10,mask = None):
     # calculate the threshold precentage
-    #print("W=",w)
-    th = w*th//10000
+    #print("W=",w)ddd
+    delta = th ##w*th//10000
     # width
     x = center_of_mass[0]
 
@@ -83,14 +83,16 @@ def player_lean(center_of_mass,width, height, w = 640 , th = 4,mask = None):
     # TODO: make this work:
 
     mask_region = Upper_Region_mask(mask,center_of_mass,height,width)
-
+    Lower = Lowwer_Region_mask(mask, center_of_mass, height, width)
+    Lowwer_h, Lowwer_w = np.where(Lower == 255)
     uppermass_h, uppermass_w = np.where(mask_region == 255)
 
     # x,y are the center of x indices and y indices of mass pixels
     center_of_upper_mass = (np.average(uppermass_w), np.average(uppermass_h))
-    if center_of_upper_mass[0] > x + th:
+    center_of_lowwer_mass = (np.average(Lowwer_w), np.average(Lowwer_h))
+    if center_of_upper_mass[0] > center_of_lowwer_mass[0] + delta:
         return 'right',center_of_upper_mass
-    if center_of_upper_mass[0] < x - th:
+    if center_of_upper_mass[0] < center_of_lowwer_mass[0] - delta:
         return 'left',center_of_upper_mass
     return 'center', center_of_upper_mass
 
@@ -125,6 +127,17 @@ def grabing(Mario):
             Mario.left_grab = False
 
 
+def faster(Mario):
+    green_location = Mario.green_center
+    red_location = Mario.red_center
+    ##[0]=w, ## [1]=h
+    if red_location != None and green_location != None :
+        if (np.abs(green_location[1] - red_location[1]) < 20) and np.abs(green_location[0] - red_location[0]) > 150 :
+            Mario.faster = True
+        else :
+            Mario.faster = False
+    else:
+        Mario.faster = False
 
 
 def Upper_Region_mask(mask,center_of_mass,height,width):
@@ -134,6 +147,21 @@ def Upper_Region_mask(mask,center_of_mass,height,width):
         # Calculate the rectangle boundaries
         top = max(center_of_mass[1] - height // 2, 0)  # Ensure top is not less than 0
         bottom = min(center_of_mass[1], mask.shape[0])  # Ensure bottom does not exceed mask height
+        left = max(center_of_mass[0] - width // 2, 0)  # Ensure left is not less than 0
+        right = min(center_of_mass[0] + width // 2, mask.shape[1])  # Ensure right does not exceed mask width
+
+        # Replace the region within the bounds with the corresponding values from the original mask
+        mask_region[top:bottom, left:right] = mask[top:bottom, left:right]
+    # iris
+    return mask_region
+
+def Lowwer_Region_mask(mask,center_of_mass,height,width):
+    mask_region = np.zeros_like(mask)
+    if not np.isnan(center_of_mass[0]) and not np.isnan(center_of_mass[1]):
+        center_of_mass = (round(center_of_mass[0]), round(center_of_mass[1]))
+        # Calculate the rectangle boundaries
+        top = max(center_of_mass[1], 0)  # Ensure top is not less than 0
+        bottom = min(center_of_mass[1] + height // 2, mask.shape[0])  # Ensure bottom does not exceed mask height
         left = max(center_of_mass[0] - width // 2, 0)  # Ensure left is not less than 0
         right = min(center_of_mass[0] + width // 2, mask.shape[1])  # Ensure right does not exceed mask width
 

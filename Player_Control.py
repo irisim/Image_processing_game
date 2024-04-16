@@ -26,6 +26,7 @@ def player_control(mask,keyboard, Mario):
         jumps = Player_Position.jumping(Mario)
         Mario.jump = jumps
         Player_Position.grabing(Mario)
+        Player_Position.faster(Mario)
         if not np.isnan(center_of_upper_mass[0]) and not np.isnan(center_of_upper_mass[1]):
             #squat = player_squat(center_of_mass,center_of_upper_mass,th=1,H=Mario.H)
             squat = Player_Position.player_squat(center_of_mass,center_of_upper_mass,th=Mario.Trashi.squati,Height =Mario.height_of_person)
@@ -39,6 +40,11 @@ def player_control(mask,keyboard, Mario):
         print("up")
         keyboard.stop_long_press(Key.down)
         keyboard.start_long_press(Key.up)
+
+    if Mario.faster == True:
+        print("faster")
+        keyboard.stop_long_press('s')
+        keyboard.start_long_press('w')
 
     if time.time() - Mario.time_right_grab > 2:
         keyboard.stop_long_press(Key.right)

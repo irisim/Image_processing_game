@@ -10,6 +10,7 @@ class KeyboardInterface:
         self.soft_press_flags = {}
         self.threads = {}
         self.press_flags ={}
+        self.user_only_mode = False
     def start_long_press(self, key):
         """
         Starts a long press on a specific key.
@@ -127,6 +128,8 @@ class KeyboardInterface:
                     self.stop_auto_press(key_char)
         except AttributeError:
             pass
+        if self.user_only_mode:  # If in user-only mode, ignore program key presses
+            return True
 
     def on_release(self, key):
         # Example: Stop listener if the escape key is pressed
@@ -137,6 +140,14 @@ class KeyboardInterface:
         """Run the listener to manage auto-presses."""
         with Listener(on_press=self.on_press, on_release=self.on_release) as listener:
             listener.join()
+
+    def block_program_presses(self):
+        """Enable user-only mode, blocking program key presses."""
+        self.user_only_mode = True
+
+    def allow_program_presses(self):
+        """Disable user-only mode, allowing program key presses."""
+        self.user_only_mode = False
 
 # Example usage
 # if __name__ == "__main__":

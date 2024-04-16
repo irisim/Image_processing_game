@@ -24,7 +24,7 @@ def filter_player(frame, background):
 
     # Threshold the diff image so that we get the foreground
     _, thresh = cv2.threshold(diff_smoothed, 25, 255, cv2.THRESH_BINARY)
-    _, thresh_for_color = cv2.threshold(diff_smoothed, 25, 255, cv2.THRESH_BINARY)
+    _, thresh_for_color = cv2.threshold(diff_smoothed1, 25, 255, cv2.THRESH_BINARY)
 
     return thresh, thresh_for_color
 
@@ -123,10 +123,10 @@ def draw_spot_info(framey, center,word = "center", color=(255, 0, 0)):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
 
-def write_text(frame, text, color=(255, 255, 255),font_scale=1, thickness =4):
+def write_text(frame, text, color=(255, 255, 255),font_scale=1, position = (10, 30), thickness =4):
     # Define the font and position
     font = cv2.FONT_HERSHEY_SIMPLEX
-    position = (10, 30)  # Adjust position as needed
+    #position = (10, 30)  # Adjust position as needed
 
     # Write the text on the frame
     cv2.putText(frame, text, position, font, font_scale, color,thickness, cv2.LINE_AA)
@@ -157,10 +157,10 @@ def grid_output(frame, background, Mario):
             center_of_upper_mass = (round(center_of_upper_mass[0]), round(center_of_upper_mass[1]))
             if Mario.squat == 'down':
                 # draw arrow down
-                binary_image2 = cv2.arrowedLine(binary_image2, center_of_upper_mass, center_of_mass, (0, 0, 255), 10,tipLength =0.5)
+                binary_image2 = cv2.arrowedLine(binary_image2, center_of_upper_mass, center_of_mass, (255, 0, 0), 10,tipLength =0.5)
 
             if time.time() - Mario.time_up < 1:
-                binary_image2 = cv2.arrowedLine(binary_image2, center_of_mass, center_of_upper_mass, (0, 255, 0), 10,
+                binary_image2 = cv2.arrowedLine(binary_image2, center_of_mass, center_of_upper_mass, (255, 0, 0), 10,
                                                 tipLength=0.5)
             draw_spot_info(Mario.frame_with_red_green, center_of_upper_mass, "upper")
             frame_with_rectangles = draw_rectangle(frame, mask,center_of_mass,center_of_upper_mass, width, height)
@@ -172,6 +172,8 @@ def grid_output(frame, background, Mario):
             write_text(binary_image2, "Red Left Grab", color=(0, 0, 255), font_scale=1)
             binary_image2 = cv2.arrowedLine(binary_image2, (600, 100), (400, 100), (0, 0, 255), 15,
                                             tipLength=0.5)
+        if Mario.faster == True:
+            write_text(binary_image2, "Faster", color=(0, 165, 255), font_scale=2, position= (250,400))
     # Prepare frames for display
     frames = [background, Mario.frame_with_red_green, frame_with_rectangles, binary_image2]
     resized_frames = [cv2.resize(frame, (480, 360)) for frame in frames] # frames #
