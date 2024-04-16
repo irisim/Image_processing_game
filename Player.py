@@ -43,6 +43,8 @@ class Player:
         self.Colori = Get_color.Colori()
         self.pause = False
         self.faster = False
+        self.stop = False
+        self.mask_lines = None
 
     def set_down(self):
         self.time_down = time.time()

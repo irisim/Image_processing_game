@@ -12,6 +12,7 @@ def player_control(mask,keyboard, Mario):
     ########dad
     center_of_mass, width, height, percentage = Player_Position.get_player_position(mask, Mario.Trashi.outlier_std_threshold)
     mask = Player_Position.Region_mask(mask, center_of_mass, height, width)
+    #Mario.mask_lines = frame.copy()
     Mario.mask = mask
     Mario.center_of_mass = center_of_mass
     Mario.width = width
@@ -27,15 +28,22 @@ def player_control(mask,keyboard, Mario):
         Mario.jump = jumps
         Player_Position.grabing(Mario)
         Player_Position.faster(Mario)
+
+        Player_Position.slow(Mario)
         if not np.isnan(center_of_upper_mass[0]) and not np.isnan(center_of_upper_mass[1]):
             #squat = player_squat(center_of_mass,center_of_upper_mass,th=1,H=Mario.H)
             squat = Player_Position.player_squat(center_of_mass,center_of_upper_mass,th=Mario.Trashi.squati,Height =Mario.height_of_person)
             Mario.squat = squat
+            Mario.time_down = time.time()
             #### Is it neccessary here ? yes
             #center_of_upper_mass = (round(center_of_upper_mass[0]), round(center_of_upper_mass[1]))
             #Mario.center_of_upper_mass = center_of_upper_mass
 
     #print(lean)
+    if Mario.stop == True :
+        print("slow")
+        keyboard.stop_long_press('w')
+        keyboard.start_long_press('s')
     if Mario.jump == 'up':
         print("up")
         keyboard.stop_long_press(Key.down)
