@@ -180,7 +180,7 @@ def grid_output(frame, background, Mario):
         mask_lines = Mario.mask_lines
     # Prepare frames for display
     #frames = [background, Mario.frame_with_red_green, frame_with_rectangles, binary_image2]
-    frames = [background, Mario.frame_with_red_green, mask_lines, binary_image2]
+    frames = [background, Mario.frame_with_red_green, binary_image1, binary_image2]
     resized_frames = [cv2.resize(frame, (480, 360)) for frame in frames] # frames #
 
     # Combine frames into a grid
