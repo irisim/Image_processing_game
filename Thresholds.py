@@ -7,6 +7,8 @@ class Trashi:
         self.grabi = 500   # Smaller -> LESS action easily, larger -> MORE actions
         self.jumpi = 400   # Smaller -> more action easily, larger -> less actions
         self.outlier_std_threshold = 5
+        self.grab_x = 500  # Smaller -> LESS action easily, larger -> MORE actions
+        self.grab_y = 700  # Smaller -> LESS action easily, larger -> MORE actions
 
     def verify_int(self, prompt):
         while True:
