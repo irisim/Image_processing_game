@@ -14,7 +14,7 @@ import os
 import Player_Control
 
 SOURCE = 'input.avi'    #
-#SOURCE = 'webcam'
+SOURCE = 'webcam'
 #SOURCE = 'fake cam'
 def play(webcam_stream, background,Mario):
     #Get_player_height
@@ -66,14 +66,14 @@ def play(webcam_stream, background,Mario):
         cv2.imshow('output', frame)
 
         # Handle user input
-        #key = cv2.waitKey(1)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        key = cv2.waitKey(1)
+        if key & 0xFF == ord('q'):
             break
-        elif cv2.waitKey(1) & 0xFF == ord('b'):
+        elif key & 0xFF == ord('b'):
             Mario.Trashi.alter_threshold()
             webcam_stream.pause()
             Mario.pause = False
-        elif cv2.waitKey(1) & 0xFF == ord('c'):
+        elif key & 0xFF == ord('c'):
             Mario.Colori.frame = Mario.frame
             Mario.Colori.change_color()
             webcam_stream.pause()
@@ -81,6 +81,8 @@ def play(webcam_stream, background,Mario):
         elif key & 0xFF == ord('e'):
             # Assuming get_EXPOSURE is a method of webcam_stream that either prints or sets the exposure
             webcam_stream.get_EXPOSURE()
+        elif key & 0xFF == ord('r'):
+            Mario.pause = False
 
 
 

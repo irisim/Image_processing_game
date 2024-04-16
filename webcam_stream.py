@@ -77,3 +77,15 @@ class WebcamStream:
     def set_EXPOSURE(self, exposure_value_us):
         self.vcap.set(cv2.CAP_PROP_EXPOSURE, exposure_value_us)
         print("Set current exposure value:", exposure_value_us, "us")
+
+    # Increase the EXPOSURE VALUE by 1
+    def increase_exposure(self):
+        self.EXP_VALUE += 1
+        self.vcap.set(cv2.CAP_PROP_EXPOSURE, self.EXP_VALUE)
+        print(f'Exposure Value increased by 1, currently its {self.EXP_VALUE}\n')
+
+    # Decrease the EXPOSURE VALUE by 1
+    def decrease_exposure(self):
+        self.EXP_VALUE -= 1
+        self.vcap.set(cv2.CAP_PROP_EXPOSURE, self.EXP_VALUE)
+        print(f'Exposure Value increased by 1, currently its {self.EXP_VALUE}\n')
