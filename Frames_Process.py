@@ -133,6 +133,7 @@ def write_text(frame, text, color=(255, 255, 255),font_scale=1, position = (10, 
 
 def grid_output(frame, background, Mario):
     mask = Mario.mask
+    mask_lines = Mario.frame.copy()
     #####
     center_of_mass, width, height = Mario.center_of_mass, Mario.width, Mario.height
     ######
@@ -174,8 +175,12 @@ def grid_output(frame, background, Mario):
                                             tipLength=0.5)
         if Mario.faster == True:
             write_text(binary_image2, "Faster", color=(0, 165, 255), font_scale=2, position= (250,400))
+        if Mario.stop == True:
+            write_text(binary_image2, "SLOW", color=(0, 165, 255), font_scale=2, position= (250,400))
+        mask_lines = Mario.mask_lines
     # Prepare frames for display
-    frames = [background, Mario.frame_with_red_green, frame_with_rectangles, binary_image2]
+    #frames = [background, Mario.frame_with_red_green, frame_with_rectangles, binary_image2]
+    frames = [background, Mario.frame_with_red_green, mask_lines, binary_image2]
     resized_frames = [cv2.resize(frame, (480, 360)) for frame in frames] # frames #
 
     # Combine frames into a grid

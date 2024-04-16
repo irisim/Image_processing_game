@@ -8,6 +8,7 @@ from pynput.keyboard import Key, Controller, Listener
 import Frames_Process
 from Player import Player
 import colors_process
+import math
 
 Mario = Player()
 def get_player_position(mask,outlier_std_threshold=5):
@@ -96,7 +97,7 @@ def player_lean(center_of_mass,width, height, w = 300 , th = 10,mask = None):
         return 'left',center_of_upper_mass
     return 'center', center_of_upper_mass
 
-
+'''
 def grabing(Mario):
     Time = time.time()
     #if (Time - Mario.time_up < 7 or Time - Mario.time_down < 7) :
@@ -126,6 +127,52 @@ def grabing(Mario):
         else :
             Mario.left_grab = False
 
+'''
+
+def grabing(Mario):
+    Time = time.time()
+    # if (Time - Mario.time_up < 7 or Time - Mario.time_down < 7) :
+    colors_process.get_green_and_red(Mario)
+    green_location = Mario.green_center
+    red_location = Mario.red_center
+    Frames_Process.draw_spot_info(Mario.frame_with_red_green, green_location, "green")
+    Frames_Process.draw_spot_info(Mario.frame_with_red_green, red_location, "red")
+    bottom_height = Mario.center_of_mass[1] + Mario.height // 2
+    # limit_bottom_height = Mario.center_of_mass[1] + Mario.height_of_person // (2 * Mario.Trashi.grabi / 100)
+    grab_thresh_y = Mario.center_of_mass[1] + Mario.height_of_person // (2 * Mario.Trashi.grab_x / 100)
+    grab_thresh_x = Mario.center_of_mass[0] + Mario.width // (2 * Mario.Trashi.grab_y / 100)
+    grabbed = False
+
+    if green_location is not None:
+        if grab_thresh_y < green_location[1]:       # Height Threshold achieved, need to grab right or left
+            grabbed = True      # There is a grab using green, dont check for red
+            if Mario.center_of_mass[0] < green_location[0]:   # Grab right
+                Mario.left_grab = False
+                Mario.right_grab = True
+                Mario.time_right_grab = time.time()
+            else:       # Grab left
+                Mario.right_grab = False
+                Mario.left_grab = True
+                Mario.time_right_grab = time.time()
+        else:
+            Mario.left_grab = False
+            Mario.right_grab = False
+
+    if red_location is not None and grabbed is not True:
+        if grab_thresh_y < red_location[1]:       # Height Threshold achieved, need to grab right or left
+            if Mario.center_of_mass[0] < red_location[0]:   # Grab right
+                Mario.left_grab = False
+                Mario.right_grab = True
+                Mario.time_right_grab = time.time()
+            else:       # Grab left
+                Mario.right_grab = False
+                Mario.left_grab = True
+                Mario.time_right_grab = time.time()
+        else:
+            Mario.left_grab = False
+            Mario.right_grab = False
+    else:
+        grabbed = False
 
 def faster(Mario):
     green_location = Mario.green_center
@@ -184,3 +231,95 @@ def Region_mask(mask,center_of_mass,height,width):
         mask_region[top:bottom, left:right] = mask[top:bottom, left:right]
     # iris
     return mask_region
+
+def slow(Mario):
+    if True :#time.time() - Mario.time_up < 1 or time.time() - Mario.time_down < 1 :
+        mask = Mario.mask.copy ()
+        mask[:240,:] = 0
+        #if mask != None :
+        #s = Mario.frame.shape()
+        mask_lines = np.zeros_like(Mario.frame)
+        added_line = np.zeros_like(Mario.frame)
+        Mario.mask_lines = mask_lines
+        edges = cv2.Canny(mask, 100, 200)
+        # Apply Hough Transform to detect lines
+        lines = cv2.HoughLines(edges, rho=4, theta=np.pi/180, threshold=80)
+        right_leg, left_leg = False, False
+        right_x0_y0 = []
+        left_x0_y0 = []
+        # Draw the lines on the original image
+        if lines is not None:
+            for line in lines:
+                rho, theta = line[0]
+                degrees_value = math.degrees(theta)
+                if 10 < np.abs(degrees_value) < 40 :
+
+                    a = np.cos(theta)
+                    b = np.sin(theta)
+                    x0 = a * rho
+                    y0 = b * rho
+                    x1 = int(x0 + 1000 * (-b))
+                    y1 = int(y0 + 1000 * (a))
+                    x2 = int(x0 - 1000 * (-b))
+                    y2 = int(y0 - 1000 * (a))
+
+                    right_leg = True
+                    cv2.line(added_line, (x1, y1), (x2, y2), (255, 0, 10), 2)
+                    mask_lines += added_line
+                    right_x0_y0.append((x0,y0))
+                    #print("right leg (x0,y0)=",(x0,y0))
+
+                if (140) < np.abs(degrees_value) < (170) :
+                    left_leg = True
+                    a = np.cos(theta)
+                    b = np.sin(theta)
+                    x0 = a * rho
+                    y0 = b * rho
+                    x1 = int(x0 + 1000 * (-b))
+                    y1 = int(y0 + 1000 * (a))
+                    x2 = int(x0 - 1000 * (-b))
+                    y2 = int(y0 - 1000 * (a))
+                    cv2.line(added_line, (x1, y1), (x2, y2), (255, 0, 10), 2)
+                    mask_lines += added_line
+                    left_x0_y0.append((x0, y0))
+                    #print("left leg (x0,y0)=", (x0, y0))
+        '''if right_leg and left_leg :
+            if ?? :
+                Mario.stop = True
+                Mario.mask_lines = mask_lines'''
+
+
+        '''
+        if right_leg and left_leg:
+            intersection = np.where(mask_lines[:,:,3] > 1)
+            if intersection[200:300,:] != 0 :
+                for right_x0, _ in right_x0_y0:
+                    for left_x0, _ in left_x0_y0:
+                        if right_x0 > left_x0:
+                            Mario.stop = True
+                            Mario.mask_lines = mask_lines
+                            print("STOPPPPPPPPPPPPPPPPPP")
+                            break'''
+        Mario.mask_lines = mask_lines
+        if right_leg and left_leg:
+            for right_x0, _ in right_x0_y0:
+                for left_x0, _ in left_x0_y0:
+                    if right_x0 > left_x0 + 100 :
+                        intersection = np.where(mask_lines[:, :,2] > 11)  # Check for intersections in the blue channel (assuming lines are drawn in blue)
+                        intersection_y_coords = intersection[0]
+                        #print("intersection = ", intersection)
+                        #print("intersection_y_coords = ", intersection_y_coords)
+                        if len(intersection[0]) > 0:  # Check if any intersection points are found
+                            intersection_y_coords = intersection[0]  # Y-coordinates of intersection points
+                            #print("intersection_y_coords = ", intersection_y_coords)
+                            if any(200 <= y <= 300 for y in intersection_y_coords):  # Check if any intersection point falls within the range 200 to 300
+                                Mario.stop = True
+                                Mario.mask_lines = mask_lines
+                                print("Intersection detected. STOPPPPPPPPPPPPPPPP")
+
+        else:
+            Mario.stop = False
+
+
+
+
