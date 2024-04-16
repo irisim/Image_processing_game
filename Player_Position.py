@@ -137,15 +137,13 @@ def grabing(Mario):
     red_location = Mario.red_center
     Frames_Process.draw_spot_info(Mario.frame_with_red_green, green_location, "green")
     Frames_Process.draw_spot_info(Mario.frame_with_red_green, red_location, "red")
-    bottom_height = Mario.center_of_mass[1] + Mario.height // 2
-    # limit_bottom_height = Mario.center_of_mass[1] + Mario.height_of_person // (2 * Mario.Trashi.grabi / 100)
-    grab_thresh_y = Mario.center_of_mass[1] + Mario.height_of_person // (2 * Mario.Trashi.grab_x / 100)
-    grab_thresh_x = Mario.center_of_mass[0] + Mario.width // (2 * Mario.Trashi.grab_y / 100)
+    grab_thresh_y = Mario.center_of_mass[1] + Mario.height_of_person // (2 * Mario.Trashi.grabi / 100)
+    #grab_thresh_x = Mario.center_of_mass[0] + Mario.width // (2 * Mario.Trashi.grab_x / 100)
     grabbed = False
 
     if green_location is not None:
         if grab_thresh_y < green_location[1]:       # Height Threshold achieved, need to grab right or left
-            grabbed = True      # There is a grab using green, dont check for red
+            grabbed = True      # There is a grab using green, don't check for red
             if Mario.center_of_mass[0] < green_location[0]:   # Grab right
                 Mario.left_grab = False
                 Mario.right_grab = True
@@ -171,8 +169,6 @@ def grabing(Mario):
         else:
             Mario.left_grab = False
             Mario.right_grab = False
-    else:
-        grabbed = False
 
 def faster(Mario):
     green_location = Mario.green_center
@@ -304,11 +300,13 @@ def slow(Mario):
         if right_leg and left_leg:
             for right_x0, right_y0 in right_x0_y0:
                 for left_x0, left_y0 in left_x0_y0:
-                    if right_x0 > left_x0 + 100 and np.abs(left_y0 - right_y0) < 100  :
+                    if right_x0 - left_x0 < 120 and 120 > np.abs(left_y0 - right_y0) > 55  :
                         intersection = np.where(mask_lines[:, :,2] > 11)  # Check for intersections in the blue channel (assuming lines are drawn in blue)
                         intersection_y_coords = intersection[0]
                         #print("intersection = ", intersection)
                         #print("intersection_y_coords = ", intersection_y_coords)
+                        print("right_x0, right_y0 =", right_x0, right_y0)
+                        print("left_x0, left_y0", left_x0, left_y0)
                         if len(intersection[0]) > 0:  # Check if any intersection points are found
                             intersection_y_coords = intersection[0]  # Y-coordinates of intersection points
                             #print("intersection_y_coords = ", intersection_y_coords)

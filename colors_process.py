@@ -20,7 +20,7 @@ def create_color_mask(frame, lower_bound, upper_bound, binary_mask):
     return mask
 
 
-def find_color_mass(mask, min_area_threshold=150):
+def find_color_mass(mask, min_area_threshold=100):
     # Find contours in the mask
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 

@@ -136,7 +136,7 @@ if True :#time.time() - Mario.time_up < 1 or time.time() - Mario.time_down < 1 :
     if right_leg and left_leg:
         for right_x0, right_y0 in right_x0_y0:
             for left_x0, left_y0 in left_x0_y0:
-                if right_x0 - left_x0 < 120 and np.abs(left_y0 - right_y0) < 80  :
+                if right_x0 - left_x0 < 130 and np.abs(left_y0 - right_y0) > 60  :
                     intersection = np.where(mask_lines[:, :,2] > 11)  # Check for intersections in the blue channel (assuming lines are drawn in blue)
                     intersection_y_coords = intersection[0]
                     #print("intersection = ", intersection)
