@@ -8,7 +8,7 @@ import colors_process
 import math
 
 Mario = Player()
-def get_player_position(mask,outlier_std_threshold=5):
+def get_player_position(mask,outlier_std_threshold=5,only_center = 0):
     """
     :param mask: binary mask
     :return: (center_x, center_y)
@@ -18,7 +18,8 @@ def get_player_position(mask,outlier_std_threshold=5):
 
     # x,y are the center of x indices and y indices of mass pixels
     center_of_mass = (np.average(mass_w), np.average(mass_h))
-
+    if only_center == 1:
+        return center_of_mass, 10, 10, 0
     if len(mass_w) < 10 or len(mass_h) < 10:
         #center_of_mass = (mask.shape[0]//2,mask.shape[1]//2)
         return center_of_mass, 10, 10, 0

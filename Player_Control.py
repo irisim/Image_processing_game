@@ -16,6 +16,7 @@ def player_control(mask, keyboard, Mario):
     # Obtain player position and characteristics
     center_of_mass, width, height, percentage = Player_Position.get_player_position(mask, Mario.Trashi.outlier_std_threshold)
     mask = Player_Position.Region_mask(mask, center_of_mass, height, width)
+    center_of_mass, _, _, _ = Player_Position.get_player_position(mask,Mario.Trashi.outlier_std_threshold,only_center=1)
     Mario.mask = mask
     Mario.center_of_mass = center_of_mass
     Mario.width = width

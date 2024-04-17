@@ -38,7 +38,7 @@ def play(webcam_stream, background, Mario):
             height_accepted = 1
 
         if key & 0xFF == ord('3'):
-            Mario.height_of_person = 380  # Set default height if required
+            Mario.height_of_person = 360  # Set default height if required
             print(
                 f"Mario.height_of_person = {Mario.height_of_person}, Mario.center_of_center = {Mario.center_of_center}")
             height_accepted = 1
