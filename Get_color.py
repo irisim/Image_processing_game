@@ -88,18 +88,5 @@ if __name__ == "__main__":
     colori = Colori()
     colori.change_color()
 
-############
-'''
-if __name__ == "__main__":
-    frame = cv2.imread('green_and_red_2.png')
-    Coli = Colori()
-    cv2.imshow("Frame", frame)
-    cv2.setMouseCallback("Frame", Coli.get_color)
-    
-    # Wait for the user to click on the screen
-    cv2.waitKey(0)
-    
-    # Release the camera and close all windows
-    #cap.release()
-    cv2.destroyAllWindows()'''
+
 

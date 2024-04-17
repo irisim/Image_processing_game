@@ -1,12 +1,5 @@
 import cv2
 import numpy as np
-from recorder import fake_cam
-from webcam_stream import WebcamStream
-import Frames_Process
-import Frames_Process
-from Player import Player
-import sys
-import os
 SOURCE = 'fake cam'
 
 
@@ -87,65 +80,3 @@ def get_green_and_red(Mario):
         cv2.circle(Mario.frame_with_red_green, green_center, 5, (0, 255, 0), -1)  # Green color for center
         #cv2.putText(Mario.frame_with_red_green, f"Green Area: {green_size}", (green_center[0] - 50, green_center[1] - 20),
         #            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-
-'''
-# initializing and starting multi - thread webcam input stream
-if SOURCE != 'webcam':
-    webcam_stream = fake_cam('./input.avi')
-    print("Using fake cam")
-
-else:
-    # initializing and starting multi - thread webcam input stream
-
-    webcam_stream = WebcamStream(stream_id=0)  # 0 id for main camera
-    print("Using webcam")
-    webcam_stream.start()
-# Example usage:
-#cap = cv2.VideoCapture(0)  # Open default camera
-
-# Define the color ranges (HSV format)
-red_lower1 = np.array([0, 180, 100])
-red_upper1 = np.array([10, 255, 255])
-
-red_lower2 = np.array([160, 100, 100])
-red_upper2 = np.array([179, 255, 255])
-
-
-green_lower = np.array([40, 50, 50])
-green_upper = np.array([80, 255, 255])
-background = Frames_Process.scan_background(webcam_stream)
-while True:
-    frame = webcam_stream.read()
-    mask, mask_4color = Frames_Process.filter_player(frame, background)
-    red_mask1 = create_color_mask(frame, red_lower1, red_upper1,mask_4color)
-    red_mask2 = create_color_mask(frame, red_lower2, red_upper2,mask_4color)
-    # Combine masks for red color
-    mask_red = cv2.bitwise_or(red_mask1, red_mask2)
-    # Find center of mass and size for red and green colors separately
-    red_center, red_size = find_color_mass(mask_red)
-
-    #Green
-    green_mask = create_color_mask(frame, green_lower, green_upper,mask_4color)
-    green_center, green_size = find_color_mass(green_mask)
-
-    # Draw circles at the center of masses
-    if red_center is not None:
-        cv2.circle(frame, red_center, 5, (0, 0, 255), -1)  # Red color for center
-        cv2.putText(frame, f"Red Area: {red_size}", (red_center[0] - 50, red_center[1] - 20),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-
-    if green_center is not None:
-        cv2.circle(frame, green_center, 5, (0, 255, 0), -1)  # Green color for center
-        cv2.putText(frame, f"Green Area: {green_size}", (green_center[0] - 50, green_center[1] - 20),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-
-    # Display the frame
-    cv2.imshow('Frame', frame)
-
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-# Release the camera and close all windows
-webcam_stream.vcap.release()
-cv2.destroyAllWindows()
-'''

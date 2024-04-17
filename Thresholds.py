@@ -1,4 +1,3 @@
-import sys
 
 class Trashi:
     def __init__(self):
