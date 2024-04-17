@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import time
-
+import add_grid_scale
 
 def filter_player(frame, background):
     """Processes the video frames to extract the foreground where the player might be located.
@@ -138,13 +138,15 @@ def grid_output(frame, background, Mario):
     such as the original background, processed frames, and overlays indicating player's movements or actions."""
     mask = Mario.mask
     mask_lines = Mario.frame.copy()
+    mask_4color = Mario.mask_4color
     #####
     center_of_mass, width, height = Mario.center_of_mass, Mario.width, Mario.height
     ######
     # Convert masks to BGR for display purposes
-    binary_image1 = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
-    binary_image2 = cv2.cvtColor(mask,
-                                 cv2.COLOR_GRAY2BGR)  ## It passes this one to display but calculate with Region mask
+    binary_image1 = cv2.cvtColor(mask_4color, cv2.COLOR_GRAY2BGR)
+    binary_image1 = add_grid_scale.add_grid_scale(binary_image1)
+    binary_image2 = cv2.cvtColor(mask,cv2.COLOR_GRAY2BGR)  ## It passes this one to display but calculate with Region mask
+    #cv2.imwrite('mask.jpg', binary_image1 )
     frame_with_rectangles = frame.copy()
     #####
     if not np.isnan(center_of_mass[0]) and not np.isnan(center_of_mass[1]):
