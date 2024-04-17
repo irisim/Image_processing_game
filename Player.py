@@ -13,7 +13,7 @@ class Player:
         self.left_grab = None
         self.faster = False
         self.stop = False
-        self.pause = False
+        self.Pause = False
 
         ### Timing info for made movments:
         self.time_right_grab = time.time()

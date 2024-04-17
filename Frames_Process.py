@@ -186,11 +186,12 @@ def grid_output(frame, background, Mario):
         if Mario.stop == True:
             write_text(binary_image2, "SLOW", color=(0, 165, 255), font_scale=2, position=(250, 400))
         mask_lines = Mario.mask_lines
+    mask_lines = add_grid_scale.add_grid_scale(mask_lines)
     # Prepare frames for display
     # frames = [background, Mario.frame_with_red_green, frame_with_rectangles, binary_image2]
-    frames = [background, Mario.frame_with_red_green, binary_image1, binary_image2]
-    resized_frames = [cv2.resize(frame, (480, 360)) for frame in frames]  # frames #
-
+    frames = [mask_lines, Mario.frame_with_red_green, background, binary_image2]
+    resized_frames = [cv2.resize(frame, (320, 240)) for frame in frames]  # frames #
+    #(480, 360)
     # Combine frames into a grid
     top_row = np.hstack(resized_frames[:2])
     bottom_row = np.hstack(resized_frames[2:])

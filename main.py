@@ -51,7 +51,8 @@ def play(webcam_stream, background, Mario):
     print("Press 'c' to edit colors\n")
 
     while True:
-        while not Mario.pause:
+        Pausee = False
+        while not Pausee :#Mario.Pause:
             frame = webcam_stream.read()
             Mario.frame = frame
             Mario.frame_with_red_green = frame.copy()
@@ -63,27 +64,30 @@ def play(webcam_stream, background, Mario):
 
             key = cv2.waitKey(1)
             if key & 0xFF == ord('p'):
-                Mario.pause = True
                 webcam_stream.pause()
+                Mario.Pause = True
+                Pausee = True
+                break
 
             if key & 0xFF == ord('q'):
                 break
 
-        key = cv2.waitKey(1)
+        key = cv2.waitKey(0)
         if key & 0xFF == ord('q'):
             break
         elif key & 0xFF == ord('b'):
             Mario.Trashi.alter_threshold()
             webcam_stream.pause()
-            Mario.pause = False
+            Mario.Pause = False
         elif key & 0xFF == ord('c'):
             Mario.Colori.change_color()
             webcam_stream.pause()
-            Mario.pause = False
+            Mario.Pause = False
         elif key & 0xFF == ord('e'):
             webcam_stream.get_EXPOSURE()
         elif key & 0xFF == ord('r'):
-            Mario.pause = False
+            Pausee = False
+            Mario.Pause = False
 
 
 # Initialize and start the webcam input stream
