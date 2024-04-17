@@ -50,7 +50,7 @@ def get_player_position(mask,outlier_std_threshold=5):
     return center_of_mass, width, height, percentage
 
 def jumping(Mario, th = 4):
-    if (time.time() - Mario.time_down > 0.5 and time.time() - Mario.time_up > 0.3) :
+    if (time.time() - Mario.time_down > 0.05  ): #and time.time() - Mario.time_up > 0.3) :
         if ( Mario.last_center[1] - Mario.center_of_mass[1] > (Mario.Trashi.jumpi/100) ):
             Mario.time_up = time.time()
             return 'up'
@@ -58,12 +58,13 @@ def jumping(Mario, th = 4):
         return 'center'
 
 def player_squat(center_of_mass,center_of_upper_mass,th=100,Height = 300):
-    delta = Height*100/ th
-    y = center_of_mass[1]
+    if (time.time() - Mario.time_up > 0.05):
+        delta = Height*100/ th
+        y = center_of_mass[1]
 
-    if center_of_upper_mass[1] > y - delta:
-        return 'down'
-    return 0
+        if center_of_upper_mass[1] > y - delta:
+            return 'down'
+        return 0
 def player_lean(center_of_mass,width, height, w = 300 , th = 10,mask = None):
     delta = th
     # width
@@ -219,14 +220,14 @@ def slow(Mario):
             degrees_value = math.degrees(theta)
 
             # Check angles for right and left leg assumptions.
-            if 10 < abs(degrees_value) < 40:
+            if 20 < abs(degrees_value) < 40:
                 right_leg = True
                 x1, y1, x2, y2 = calculate_line_endpoints(rho, theta)
                 cv2.line(added_line, (x1, y1), (x2, y2), (255, 0, 10), 2)
                 mask_lines += added_line
                 right_x0_y0.append((rho * np.cos(theta), rho * np.sin(theta)))
 
-            if 140 < abs(degrees_value) < 170:
+            if 140 < abs(degrees_value) < 160:
                 left_leg = True
                 x1, y1, x2, y2 = calculate_line_endpoints(rho, theta)
                 cv2.line(added_line, (x1, y1), (x2, y2), (255, 0, 10), 2)
@@ -275,12 +276,13 @@ def check_for_stop(Mario, right_x0_y0, left_x0_y0, mask_lines):
     """
     for right_x0, right_y0 in right_x0_y0:
         for left_x0, left_y0 in left_x0_y0:
-            if abs(right_x0 - left_x0) < 120 and 120 > abs(left_y0 - right_y0) > 55:
-                intersection = np.where(mask_lines[:, :, 2] > 11)  # Check intersections in the blue channel.
-                if len(intersection[0]) > 0 and any(200 <= y <= 300 for y in intersection[0]):
+            if abs(right_x0 - left_x0) < 125 and 120 > abs(left_y0 - right_y0) > 55:
+                intersection = np.where(mask_lines[:, :, 2] > 11)  # Check intersections in the red channel.
+                print("intersection[0]=",intersection[0])
+                if len(intersection[0]) > 0 and any(240 <= y <= 370 for y in intersection[0]):
                     Mario.stop = True
                     Mario.mask_lines = mask_lines
-                    #print(f"Intersection detected between {right_x0, right_y0} and {left_x0, left_y0}. STOPPPPPPPPPPPPPPPP")
+                    print(f"Intersection detected between {right_x0, right_y0} and {left_x0, left_y0}. STOPPPPPPPPPPPPPPPP")
 
 
 

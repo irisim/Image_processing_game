@@ -91,4 +91,5 @@ def player_control(mask, keyboard, Mario):
         keyboard.stop_long_press("d")
 
     Mario.previous_mask = mask
-    Mario.last_center = Mario.center_of_mass
+    Mario.last_center = center_of_mass
+
