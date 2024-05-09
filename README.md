@@ -1,22 +1,2 @@
 # Image_processing_game
-
-משימות להמשך:
-
-2. להכין סרטון דוגמא כדיי שנדבג עליו
-   
-8. לנסות להבין את סד"פ להפעלת גראבים - זה לא סתם לחיצה כמו ימינה שמאלה במשחק, זה דורש איזשהו תיאום עם הקפיצה, טיימינג, ושלא ילחצו מקשים אחרים בזמן הזה ( אלא אם רוצים פעלול בכוונה)
-   
-10. לשייף ולדייק את זיהוי הגראב עוד יותר, ולהבהיק את הסימון שלו על המסך כל עוד לוחצים על המקש (כרגע זה רק כשזה מתקבל, ואנחנו לוחצים על המקש למשך 2 שניות החל מהרגע שזה התקבל)
- 
-12.  לאפיין סטופ ע"י טרנספורמציית האף (אחרי קפיצה) לזיהוי פיסוק ברגליים
-    
-14.  להכניס את הפיצ'ר של החלפת צד (גם זיהוי ע"י החלפת אדום ירוק לאחר קפיצה, וגם להוסיף את הלחיצה עצמה בPLAYER_CONTROL)
-    
-16.  ללטש
-    
-18.לשפר קליטה של הצבע האדום (בשעת לילה פחות קלט אותו?)
-
-עשינו היום :
-1. שיפרנו מהירות סרטון
-2.  להכניס את כל הטראשהולדים כתכונות של מריו
-3. להכניס פיצ'ר עריכת הטראשהולדים דרך MAIN לפי לחיצה על מקש עריכה כלשהו
+In our computer vision and image processing-driven interactive game interface development, our primary focus revolved around immersing players in a lifelike snowboarding simulation. We aimed not just to let players control an avatar but to transport them into the game environment, where they could physically experience navigating mountain slopes on a virtual snowboard. Our endeavor was to replicate the precise physics of snowboarding, ensuring that every turn, jump, and lean on the virtual board mimicked real-world dynamics. This meticulous attention to physical accuracy was crucial in delivering an intuitive gameplay experience, where players' actions seamlessly translated into the game with unparalleled realism. In achieving this goal, we leveraged advanced image processing tools to analyze real-time player movements and translate them into responsive actions within the virtual environment. This integration of cutting-edge image processing techniques played a pivotal role in ensuring the seamless fusion of physical realism and interactive gameplay.
