@@ -62,16 +62,16 @@ def player_control(mask, keyboard, Mario):
     if Mario.right_grab:
         Mario.time_right_grab = time.time()
         keyboard.start_long_press(Key.right)
-    elif time.time() - Mario.time_right_grab < 1:
-        keyboard.start_long_press(Key.right) ### If you used left grab in the last sec (before jumping) consider it
+    # elif time.time() - Mario.time_right_grab < 1:
+    #     keyboard.start_long_press(Key.right) ### If you used left grab in the last sec (before jumping) consider it
     else:
         keyboard.stop_long_press(Key.right)
 
     if Mario.left_grab:
         Mario.time_left_grab = time.time()
         keyboard.start_long_press(Key.left)
-    elif time.time() - Mario.time_left_grab < 1:
-        keyboard.start_long_press(Key.left) ### If you used left grab in the last sec (before jumping) consider it
+    # elif time.time() - Mario.time_left_grab < 1:
+    #     keyboard.start_long_press(Key.left) ### If you used left grab in the last sec (before jumping) consider it
     else:
         keyboard.stop_long_press(Key.left)
 

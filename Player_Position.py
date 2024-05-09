@@ -85,9 +85,9 @@ def player_lean(center_of_mass,width, height, w = 300 , th = 10,mask = None):
     center_of_upper_mass = (np.average(uppermass_w), np.average(uppermass_h))
     center_of_lowwer_mass = (np.average(Lowwer_w), np.average(Lowwer_h))
     if center_of_upper_mass[0] > center_of_lowwer_mass[0] + delta:
-        return 'right',center_of_upper_mass
+        return 'right', center_of_upper_mass
     if center_of_upper_mass[0] < center_of_lowwer_mass[0] - delta:
-        return 'left',center_of_upper_mass
+        return 'left', center_of_upper_mass
     return 'center', center_of_upper_mass
 
 def grabing(Mario):
@@ -221,14 +221,14 @@ def slow(Mario):
             degrees_value = math.degrees(theta)
 
             # Check angles for right and left leg assumptions.
-            if 20 < abs(degrees_value) < 40:
+            if 20 < abs(degrees_value) < 40: ## 20 -> 40
                 right_leg = True
                 x1, y1, x2, y2 = calculate_line_endpoints(rho, theta)
-                cv2.line(added_line, (x1, y1), (x2, y2), (255, 0, 10), 2)
+                cv2.line(added_line, (x1, y1), (x2, y2), (255, 10, 0), 2)
                 mask_lines += added_line
                 right_x0_y0.append((rho * np.cos(theta), rho * np.sin(theta)))
 
-            if 140 < abs(degrees_value) < 160:
+            if 140 < abs(degrees_value) < 160: ## 140 -> 160
                 left_leg = True
                 x1, y1, x2, y2 = calculate_line_endpoints(rho, theta)
                 cv2.line(added_line, (x1, y1), (x2, y2), (255, 0, 10), 2)
@@ -267,7 +267,7 @@ def calculate_line_endpoints(rho, theta):
 
 def check_for_stop(Mario, right_x0_y0, left_x0_y0, mask_lines):
     """
-    Check if Mario should stop based on the positions of detected lines.
+    Checkd if Mario should stop based on the positions of detected lines.
 
     Args:
         Mario (object): Mario object with mask data.
@@ -275,15 +275,17 @@ def check_for_stop(Mario, right_x0_y0, left_x0_y0, mask_lines):
         left_x0_y0 (list): List of coordinates for left leg lines.
         mask_lines (array): Image array where lines are drawn.
     """
+
     for right_x0, right_y0 in right_x0_y0:
         for left_x0, left_y0 in left_x0_y0:
-            if abs(right_x0 - left_x0) < 125 and 120 > abs(left_y0 - right_y0) > 55:
-                intersection = np.where(mask_lines[:, :, 2] > 11)  # Check intersections in the red channel.
-                print("intersection[0]=",intersection[0])
-                if len(intersection[0]) > 0 and any(240 <= y <= 370 for y in intersection[0]):
+            if abs(left_y0 - right_y0) > 220:#abs(right_x0 - left_x0) < 150 and 140 > abs(left_y0 - right_y0) > 55:
+                #intersection = np.where(mask_lines[:, :, 2] > 9)# and mask_lines[:, :, 1] > 9)  # Check intersections in the red channel.
+                intersection = np.where((mask_lines[:, :, 2] > 9) & (mask_lines[:, :, 1] > 9))
+                #print("intersection[0]=",intersection[0])
+                if len(intersection[0]) > 0 and any(240 <= y <= 300 for y in intersection[0]):
                     Mario.stop = True
                     Mario.mask_lines = mask_lines
-                    print(f"Intersection detected between {right_x0, right_y0} and {left_x0, left_y0}. STOPPPPPPPPPPPPPPPP")
+                    #print(f"Intersection detected between {right_x0, right_y0} and {left_x0, left_y0}. STOPPPPPPPPPPPPPPPP")
 
 
 

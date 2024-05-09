@@ -2,6 +2,7 @@ import cv2
 import time
 from threading import Thread
 
+
 class WebcamStream:
     def __init__(self, stream_id=0):
         self.stream_id = stream_id
@@ -12,6 +13,7 @@ class WebcamStream:
         fps_input_stream = int(self.vcap.get(cv2.CAP_PROP_FPS))
         print("FPS of input stream: {}".format(fps_input_stream))
         self.grabbed, self.frame = self.vcap.read()
+        self.EXP_VALUE = -6
         self.frame_ready = False
         self.stopped = True
         self.paused = False
@@ -46,7 +48,7 @@ class WebcamStream:
 
     def pause(self):
         self.paused = not self.paused
-        print('paused⏸'*self.paused + f'resumed⏯'*(not self.paused))
+        print('paused⏸' * self.paused + f'resumed⏯' * (not self.paused))
 
     def stop(self):
         self.stopped = True
@@ -77,6 +79,18 @@ class WebcamStream:
     def set_EXPOSURE(self, exposure_value_us):
         self.vcap.set(cv2.CAP_PROP_EXPOSURE, exposure_value_us)
         print("Set current exposure value:", exposure_value_us, "us")
+
+    # Increase the EXPOSURE VALUE by 1
+    def increase_exposure(self):
+        self.EXP_VALUE += 1
+        self.vcap.set(cv2.CAP_PROP_EXPOSURE, self.EXP_VALUE)
+        print(f'Exposure Value increased by 1, currently its {self.EXP_VALUE}\n')
+
+    # Decrease the EXPOSURE VALUE by 1
+    def decrease_exposure(self):
+        self.EXP_VALUE -= 1
+        self.vcap.set(cv2.CAP_PROP_EXPOSURE, self.EXP_VALUE)
+        print(f'Exposure Value increased by 1, currently its {self.EXP_VALUE}\n')
 
     # Increase the EXPOSURE VALUE by 1
     def increase_exposure(self):

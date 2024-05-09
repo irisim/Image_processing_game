@@ -49,8 +49,27 @@ def scan_background(webcam_stream):
             background = frame.copy()
             # on the left side of the frame, write text
             # cv2.putText(frame, f'Do Not Stand In Frame {(500 - i)//50}', (410, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
-            cv2.putText(frame, f'Do Not Stand In Frame {(1000 - i) // 100}', (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX,
-                        1, (0, 0, 255), 2, cv2.LINE_AA)
+            # Define the text for each line
+            line1 = 'Do Not Stand In Frame'
+            line2 = 'Press "1" to accept background.'
+            line3 = 'Then, step player in frame, and press'
+            line4 = '"2" to measure player height '
+            line5 = 'or "3" to use standard height'
+
+            # Calculate the positions for each line
+            spacing = 30  # Define the spacing between lines
+
+            # Put each line of text on the frame
+            cv2.putText(frame, line1, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
+            cv2.putText(frame, line2, (text_x, text_y + spacing), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2,
+                        cv2.LINE_AA)
+            cv2.putText(frame, line3, (text_x, text_y + 2 * spacing), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 255), 2,
+                        cv2.LINE_AA)
+            cv2.putText(frame, line4, (text_x, text_y + 3 * spacing), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 255), 2,
+                        cv2.LINE_AA)
+            cv2.putText(frame, line5, (text_x, text_y + 4 * spacing), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 255), 2,
+                        cv2.LINE_AA)
+
             # Display the resulting frame
             cv2.imshow('output', frame)
             # quit the scan
@@ -143,7 +162,7 @@ def grid_output(frame, background, Mario):
     center_of_mass, width, height = Mario.center_of_mass, Mario.width, Mario.height
     ######
     # Convert masks to BGR for display purposes
-    binary_image1 = cv2.cvtColor(mask_4color, cv2.COLOR_GRAY2BGR)
+    binary_image1 = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
     binary_image1 = add_grid_scale.add_grid_scale(binary_image1)
     binary_image2 = cv2.cvtColor(mask,cv2.COLOR_GRAY2BGR)  ## It passes this one to display but calculate with Region mask
     #cv2.imwrite('mask.jpg', binary_image1 )
@@ -187,11 +206,13 @@ def grid_output(frame, background, Mario):
             write_text(binary_image2, "SLOW", color=(0, 165, 255), font_scale=2, position=(250, 400))
         mask_lines = Mario.mask_lines
     mask_lines = add_grid_scale.add_grid_scale(mask_lines)
+    mask_lines = mask_lines + binary_image1
     # Prepare frames for display
     # frames = [background, Mario.frame_with_red_green, frame_with_rectangles, binary_image2]
-    frames = [mask_lines, Mario.frame_with_red_green, background, binary_image2]
-    resized_frames = [cv2.resize(frame, (320, 240)) for frame in frames]  # frames #
+    frames = [mask_lines, Mario.frame_with_red_green, frame_with_rectangles, binary_image2]
+    resized_frames = [cv2.resize(frame,(480, 360) ) for frame in frames]  # frames #
     #(480, 360)
+    #(320, 240)
     # Combine frames into a grid
     top_row = np.hstack(resized_frames[:2])
     bottom_row = np.hstack(resized_frames[2:])

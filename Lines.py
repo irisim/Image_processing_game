@@ -2,8 +2,8 @@
 import cv2
 import numpy as np
 import math
-#mask =  cv2.imread("stop_pose.png")
-mask =  cv2.imread("no_slow.png")
+mask =  cv2.imread("stop_pose.png")
+#mask =  cv2.imread("no_slow.png")
 #mask =  cv2.imread("stop_pose.png")
 #mask[:240,:,:] = 0
 edges = cv2.Canny(mask, 100, 200)
@@ -61,8 +61,8 @@ mask =  cv2.imread("no_slow.png")
 
 if True :#time.time() - Mario.time_up < 1 or time.time() - Mario.time_down < 1 :
     #mask = Mario.mask.copy ()
-    mask[:100,:,:] = 0
-    cv2.imshow('Detected Lines', mask)
+    mask[:150,:,:] = 0
+    cv2.imshow('Mask', mask)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     #if mask != None :
@@ -130,7 +130,7 @@ if True :#time.time() - Mario.time_up < 1 or time.time() - Mario.time_down < 1 :
                         print("STOPPPPPPPPPPPPPPPPPP")
                         break'''
     #Mario.mask_lines = mask_lines
-    cv2.imshow('Detected Lines', mask_lines)
+    cv2.imshow('Detected Lines', mask_lines + mask)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     if right_leg and left_leg:
